@@ -57,6 +57,38 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.people),
+        onPressed: () {
+          showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return SimpleDialog(
+                  title: Text('Find Others to commute with?'),
+                  children: <Widget>[
+                    ButtonBar(
+                      children: <Widget>[
+                        RaisedButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: Text('Yes'),
+                          color: Colors.green,
+                        ),
+                        FlatButton(
+                          color: Colors.grey,
+                          child: Text('No'),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        )
+                      ],
+                    )
+                  ],
+                );
+              });
+        },
+      ),
       backgroundColor: Colors.white,
       appBar: AppBar(
         elevation: 0,

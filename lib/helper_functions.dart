@@ -17,6 +17,7 @@ Future<Set<Marker>> convertHeatMapItemsToMarkers({
         position: LatLng(heatMapItem.coordinates.lat, heatMapItem.coordinates.long),
         icon: icon,
         onTap: (){
+          Scaffold.of(context).removeCurrentSnackBar();
           Scaffold.of(context).showSnackBar(
             SnackBar(
               content: new Text(heatMapItem.details),
