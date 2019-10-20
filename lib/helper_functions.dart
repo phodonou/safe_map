@@ -13,6 +13,7 @@ Future<Set<Marker>> convertHeatMapItemsToMarkers({
     markers.add(
       Marker(
         markerId: MarkerId(heatMapItem.id),
+        position: LatLng(heatMapItem.coordinates.lat, heatMapItem.coordinates.long),
         icon: icon,
       ),
     );
@@ -26,7 +27,7 @@ Future<BitmapDescriptor> generateIcon() async {
   );
   BitmapDescriptor bitmapDescriptor = await BitmapDescriptor.fromAssetImage(
     imageConfiguration,
-    'heat_map_item.png',
+    'assets/heat_map_icon.png',
   );
   return bitmapDescriptor;
 }

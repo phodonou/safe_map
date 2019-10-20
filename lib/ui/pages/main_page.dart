@@ -1,3 +1,4 @@
+import 'package:demon_hacks/models/models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -13,6 +14,8 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   PickLocationBloc _pickLocationBloc;
+  final defaultLat = 37.42796133580664;
+  final defaultLon = -122.085749655962;
 
   @override
   void initState() {
@@ -30,31 +33,35 @@ class _MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.blueGrey[300],
+        centerTitle: true,
         title: BlocBuilder(
           bloc: _pickLocationBloc,
           builder: (BuildContext context, PickLocationState state) {
             if (state is LocationFetched) {
-              if (state.heatMapItems.isEmpty)
+              if (state.centeredLocation == null)
                 return Text('No Location Picked');
               else
-                return Text("Near ${state.heatMapItems[0].itemName}");
+                return Text("Near ${state.centeredLocation.locationName}");
             } else {
               return Container();
             }
           },
         ),
-        elevation: 0,
-        backgroundColor: Colors.blueGrey[300],
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.search),
             onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(
+              Navigator.of(context).push(
+                MaterialPageRoute(
                   fullscreenDialog: true,
                   builder: (_) => BlocProvider<SearchLocationBloc>(
-                        builder: (BuildContext context) => SearchLocationBloc(),
-                        child: LocationSearch(),
-                      )));
+                    builder: (BuildContext context) => SearchLocationBloc(),
+                    child: LocationSearch(),
+                  ),
+                ),
+              );
             },
           )
         ],
@@ -74,13 +81,21 @@ class _MainPageState extends State<MainPage> {
               builder:
                   (BuildContext context, AsyncSnapshot<Set<Marker>> markers) {
                 if (!markers.hasData) return Container();
+                final LocationSearchResult searchResult =
+                    state.centeredLocation;
+                double lat;
+                double lon;
+                if (searchResult == null) {
+                  lat = defaultLat;
+                  lon = defaultLon;
+                } else {
+                  lat = searchResult.coordinates.lat;
+                  lon = searchResult.coordinates.long;
+                }
                 return GoogleMap(
                   initialCameraPosition: CameraPosition(
-                    target: LatLng(
-                      state.centeredLocation.coordinates.lat,
-                      state.centeredLocation.coordinates.long,
-                    ),
-                    zoom: 14.4746,
+                    target: LatLng(lat, lon),
+                    zoom: 15,
                   ),
                   markers: markers.data,
                 );

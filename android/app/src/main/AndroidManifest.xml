@@ -7,12 +7,13 @@
          additional functionality it is fine to subclass or reimplement
          FlutterApplication and put your custom class here. -->
     <application
-        android:name="com.google.android.geo.API_KEY"
-        android:value="AIzaSyAPf4j1wGC3A_eqOl7ThYZcydtUe8vAbrM"/>
-    <application
         android:name="io.flutter.app.FlutterApplication"
         android:label="demon_hacks"
         android:icon="@mipmap/ic_launcher">
+
+        <meta-data android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyAPf4j1wGC3A_eqOl7ThYZcydtUe8vAbrM"/>
+
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
