@@ -19,7 +19,6 @@ class MapWidget extends StatelessWidget {
             child: CircularProgressIndicator(),
           );
         } else if (state is LocationFetched) {
-          print("THIS LOCATION WAS FETCHED ${state.heatMapItems}");
           return FutureBuilder(
             future: convertHeatMapItemsToMarkers(
               heatMapItems: state.heatMapItems,
@@ -40,7 +39,7 @@ class MapWidget extends StatelessWidget {
               return GoogleMap(
                 initialCameraPosition: CameraPosition(
                   target: LatLng(lat, lon),
-                  zoom: 15,
+                  zoom: 13,
                 ),
                 markers: markers.data,
                 myLocationButtonEnabled: false,

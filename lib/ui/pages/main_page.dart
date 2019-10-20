@@ -19,7 +19,7 @@ class _MainPageState extends State<MainPage> {
   LocationSearchRepo _locationSearchRepo;
   PickLocationBloc _pickLocationBloc;
   SearchLocationBloc _searchLocationBloc;
-  // List<Widget> _children;
+  List<Widget> _children;
 
   @override
   void initState() {
@@ -31,10 +31,10 @@ class _MainPageState extends State<MainPage> {
     _pickLocationBloc = PickLocationBloc(heatMapRepo: _heatMapRepo);
     _searchLocationBloc =
         SearchLocationBloc(locationSearchRepo: _locationSearchRepo);
-    // _children = [
-    //   MapWidget(),
-    //   FeedWidget(),
-    // ];
+    _children = [
+      MapWidget(),
+      FeedWidget(),
+    ];
   }
 
   @override
@@ -74,11 +74,11 @@ class _MainPageState extends State<MainPage> {
                   fullscreenDialog: true,
                   builder: (_) => MultiBlocProvider(
                     providers: [
-                      BlocProvider<SearchLocationBloc>(
-                        builder: (BuildContext context) => _searchLocationBloc,
+                      BlocProvider<SearchLocationBloc>.value(
+                        value: _searchLocationBloc,
                       ),
-                      BlocProvider<PickLocationBloc>(
-                        builder: (_) => _pickLocationBloc,
+                      BlocProvider<PickLocationBloc>.value(
+                        value:  _pickLocationBloc,
                       )
                     ],
                     child: LocationSearch(),
@@ -98,45 +98,45 @@ class _MainPageState extends State<MainPage> {
             builder: (_) => _pickLocationBloc,
           )
         ],
-        child: MapWidget(),
+        child: _children[currentIndex],
       ),
-      // bottomNavigationBar: BubbleBottomBar(
-      //   opacity: .2,
-      //   currentIndex: currentIndex,
-      //   onTap: (int pickIndex) {
-      //     setState(() {
-      //       currentIndex = pickIndex;
-      //     });
-      //   },
-      //   borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
-      //   elevation: 8,
-      //   fabLocation: BubbleBottomBarFabLocation.end,
-      //   hasNotch: true,
-      //   hasInk: true,
-      //   inkColor: Colors.black12,
-      //   items: <BubbleBottomBarItem>[
-      //     BubbleBottomBarItem(
-      //         backgroundColor: Colors.indigo,
-      //         icon: Icon(
-      //           Icons.map,
-      //           color: Colors.black,
-      //         ),
-      //         activeIcon: Icon(
-      //           Icons.map,
-      //         ),
-      //         title: Text("Map")),
-      //     BubbleBottomBarItem(
-      //         backgroundColor: Colors.green,
-      //         icon: Icon(
-      //           Icons.chat_bubble,
-      //           color: Colors.black,
-      //         ),
-      //         activeIcon: Icon(
-      //           Icons.chat_bubble_outline,
-      //         ),
-      //         title: Text("Feed"))
-      //   ],
-      // ),
+      bottomNavigationBar: BubbleBottomBar(
+        opacity: .2,
+        currentIndex: currentIndex,
+        onTap: (int pickIndex) {
+          setState(() {
+            currentIndex = pickIndex;
+          });
+        },
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+        elevation: 8,
+        fabLocation: BubbleBottomBarFabLocation.end,
+        hasNotch: true,
+        hasInk: true,
+        inkColor: Colors.black12,
+        items: <BubbleBottomBarItem>[
+          BubbleBottomBarItem(
+              backgroundColor: Colors.indigo,
+              icon: Icon(
+                Icons.map,
+                color: Colors.black,
+              ),
+              activeIcon: Icon(
+                Icons.map,
+              ),
+              title: Text("Map")),
+          BubbleBottomBarItem(
+              backgroundColor: Colors.green,
+              icon: Icon(
+                Icons.chat_bubble,
+                color: Colors.black,
+              ),
+              activeIcon: Icon(
+                Icons.chat_bubble_outline,
+              ),
+              title: Text("Feed"))
+        ],
+      ),
     );
   }
 }

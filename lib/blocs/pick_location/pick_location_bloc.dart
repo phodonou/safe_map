@@ -22,13 +22,14 @@ class PickLocationBloc extends Bloc<PickLocationEvent, PickLocationState> {
   ) async* {
     if (event is LocationPicked) {
       yield LocationFetching();
-      // List<HeatMapItem> heatMapItems = await heatMapRepo.fetchHeatMapItems(
-      //   locationSearchResult: event.locationSearchResult,
-      // );
-      await Future.delayed(Duration(seconds: 1));
+      List<HeatMapItem> heatMapItems = await heatMapRepo.fetchHeatMapItems(
+        locationSearchResult: event.locationSearchResult,
+      );
+      print('HEAT MAP LENGTH ${heatMapItems.length}');
+      print('HEAT MAP LENGTH ${heatMapItems[0].details}');
       yield LocationFetched(
-        centeredLocation: mockCenteredLocation,
-        heatMapItems: mockHeapMapItems,
+        centeredLocation: event.locationSearchResult,
+        heatMapItems: heatMapItems,
       );
     }
   }

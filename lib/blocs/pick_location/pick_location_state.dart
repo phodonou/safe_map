@@ -13,5 +13,3 @@ class LocationFetched extends PickLocationState {
 }
 
 class LocationFetching extends PickLocationState {}
-
-class LocationError extends PickLocationState {}
