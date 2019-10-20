@@ -19,6 +19,7 @@ class MapWidget extends StatelessWidget {
             child: CircularProgressIndicator(),
           );
         } else if (state is LocationFetched) {
+          print("THIS LOCATION WAS FETCHED ${state.heatMapItems}");
           return FutureBuilder(
             future: convertHeatMapItemsToMarkers(
               heatMapItems: state.heatMapItems,

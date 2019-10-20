@@ -5,7 +5,6 @@ import 'search_location_event.dart';
 import 'search_location_state.dart';
 import 'package:demon_hacks/models/models.dart';
 import 'package:demon_hacks/repos/repos.dart';
-import 'package:demon_hacks/mock_data.dart';
 
 class SearchLocationBloc
     extends Bloc<SearchLocationEvent, SearchLocationState> {

@@ -55,8 +55,6 @@ final List<HeatMapItem> mockHeapMapItems = [
   HeatMapItem(
     id: '1',
     details: '',
-    itemName: 'California',
-    dangerNumber: 1,
     coordinates: Coordinates(
       lat: 37,
       long: -122,
@@ -65,8 +63,6 @@ final List<HeatMapItem> mockHeapMapItems = [
   HeatMapItem(
     id: '1',
     details: '',
-    itemName: 'California',
-    dangerNumber: 1,
     coordinates: Coordinates(
       lat: 37.001,
       long: -122.001,

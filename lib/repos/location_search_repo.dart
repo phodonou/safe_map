@@ -1,9 +1,9 @@
 import 'package:meta/meta.dart';
 import 'dart:convert';
+import 'package:http/http.dart';
 
 import 'package:demon_hacks/network/http_service.dart';
 import 'package:demon_hacks/models/models.dart';
-import 'package:http/http.dart';
 
 class LocationSearchRepo {
   final HttpService httpService;

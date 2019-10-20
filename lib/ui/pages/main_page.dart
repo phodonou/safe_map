@@ -6,7 +6,6 @@ import 'package:demon_hacks/ui/components/component.dart';
 import 'package:demon_hacks/blocs/blocs.dart';
 import 'package:demon_hacks/repos/repos.dart';
 import 'package:demon_hacks/network/http_service.dart';
-import 'package:demon_hacks/ui/components/component.dart';
 
 class MainPage extends StatefulWidget {
   @override
@@ -14,29 +13,35 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  PickLocationBloc _pickLocationBloc;
-  LocationSearchRepo _locationSearchRepo;
-  HttpService _httpService;
   int currentIndex;
-  List<Widget> _children;
+  HttpService _httpService;
+  HeatMapRepo _heatMapRepo;
+  LocationSearchRepo _locationSearchRepo;
+  PickLocationBloc _pickLocationBloc;
+  SearchLocationBloc _searchLocationBloc;
+  // List<Widget> _children;
 
   @override
   void initState() {
     super.initState();
-    _httpService = HttpService();
-    _pickLocationBloc = PickLocationBloc();
-    _locationSearchRepo = LocationSearchRepo(httpService: _httpService);
     currentIndex = 0;
-    _children = [
-      MapWidget(),
-      FeedWidget(),
-    ];
+    _httpService = HttpService();
+    _heatMapRepo = HeatMapRepo(httpService: _httpService);
+    _locationSearchRepo = LocationSearchRepo(httpService: _httpService);
+    _pickLocationBloc = PickLocationBloc(heatMapRepo: _heatMapRepo);
+    _searchLocationBloc =
+        SearchLocationBloc(locationSearchRepo: _locationSearchRepo);
+    // _children = [
+    //   MapWidget(),
+    //   FeedWidget(),
+    // ];
   }
 
   @override
   void dispose() {
     super.dispose();
     _pickLocationBloc.close();
+    _searchLocationBloc.close();
   }
 
   @override
@@ -70,9 +75,7 @@ class _MainPageState extends State<MainPage> {
                   builder: (_) => MultiBlocProvider(
                     providers: [
                       BlocProvider<SearchLocationBloc>(
-                        builder: (BuildContext context) => SearchLocationBloc(
-                          locationSearchRepo: _locationSearchRepo,
-                        ),
+                        builder: (BuildContext context) => _searchLocationBloc,
                       ),
                       BlocProvider<PickLocationBloc>(
                         builder: (_) => _pickLocationBloc,
@@ -89,53 +92,51 @@ class _MainPageState extends State<MainPage> {
       body: MultiBlocProvider(
         providers: [
           BlocProvider<SearchLocationBloc>(
-            builder: (BuildContext context) => SearchLocationBloc(
-              locationSearchRepo: _locationSearchRepo,
-            ),
+            builder: (BuildContext context) => _searchLocationBloc,
           ),
           BlocProvider<PickLocationBloc>(
             builder: (_) => _pickLocationBloc,
           )
         ],
-        child: _children[currentIndex],
+        child: MapWidget(),
       ),
-      bottomNavigationBar: BubbleBottomBar(
-        opacity: .2,
-        currentIndex: currentIndex,
-        onTap: (int pickIndex) {
-          setState(() {
-            currentIndex = pickIndex;
-          });
-        },
-        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
-        elevation: 8,
-        fabLocation: BubbleBottomBarFabLocation.end,
-        hasNotch: true,
-        hasInk: true,
-        inkColor: Colors.black12,
-        items: <BubbleBottomBarItem>[
-          BubbleBottomBarItem(
-              backgroundColor: Colors.indigo,
-              icon: Icon(
-                Icons.map,
-                color: Colors.black,
-              ),
-              activeIcon: Icon(
-                Icons.map,
-              ),
-              title: Text("Map")),
-          BubbleBottomBarItem(
-              backgroundColor: Colors.green,
-              icon: Icon(
-                Icons.chat_bubble,
-                color: Colors.black,
-              ),
-              activeIcon: Icon(
-                Icons.chat_bubble_outline,
-              ),
-              title: Text("Feed"))
-        ],
-      ),
+      // bottomNavigationBar: BubbleBottomBar(
+      //   opacity: .2,
+      //   currentIndex: currentIndex,
+      //   onTap: (int pickIndex) {
+      //     setState(() {
+      //       currentIndex = pickIndex;
+      //     });
+      //   },
+      //   borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      //   elevation: 8,
+      //   fabLocation: BubbleBottomBarFabLocation.end,
+      //   hasNotch: true,
+      //   hasInk: true,
+      //   inkColor: Colors.black12,
+      //   items: <BubbleBottomBarItem>[
+      //     BubbleBottomBarItem(
+      //         backgroundColor: Colors.indigo,
+      //         icon: Icon(
+      //           Icons.map,
+      //           color: Colors.black,
+      //         ),
+      //         activeIcon: Icon(
+      //           Icons.map,
+      //         ),
+      //         title: Text("Map")),
+      //     BubbleBottomBarItem(
+      //         backgroundColor: Colors.green,
+      //         icon: Icon(
+      //           Icons.chat_bubble,
+      //           color: Colors.black,
+      //         ),
+      //         activeIcon: Icon(
+      //           Icons.chat_bubble_outline,
+      //         ),
+      //         title: Text("Feed"))
+      //   ],
+      // ),
     );
   }
 }
