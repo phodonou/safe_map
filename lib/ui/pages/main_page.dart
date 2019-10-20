@@ -16,9 +16,11 @@ class _MainPageState extends State<MainPage> {
   int currentIndex;
   HttpService _httpService;
   HeatMapRepo _heatMapRepo;
+  FeedsRepo _feedsRepo;
   LocationSearchRepo _locationSearchRepo;
   PickLocationBloc _pickLocationBloc;
   SearchLocationBloc _searchLocationBloc;
+  FeedsBloc _feedsBloc;
   List<Widget> _children;
 
   @override
@@ -28,9 +30,16 @@ class _MainPageState extends State<MainPage> {
     _httpService = HttpService();
     _heatMapRepo = HeatMapRepo(httpService: _httpService);
     _locationSearchRepo = LocationSearchRepo(httpService: _httpService);
-    _pickLocationBloc = PickLocationBloc(heatMapRepo: _heatMapRepo);
+    _feedsRepo = FeedsRepo(httpService: _httpService);
     _searchLocationBloc =
         SearchLocationBloc(locationSearchRepo: _locationSearchRepo);
+    _feedsBloc = FeedsBloc(
+      feedsRepo: _feedsRepo,
+    );
+    _pickLocationBloc = PickLocationBloc(
+      heatMapRepo: _heatMapRepo,
+      feedBloc: _feedsBloc,
+    );
     _children = [
       MapWidget(),
       FeedWidget(),
@@ -42,6 +51,7 @@ class _MainPageState extends State<MainPage> {
     super.dispose();
     _pickLocationBloc.close();
     _searchLocationBloc.close();
+    _feedsBloc.close();
   }
 
   @override
@@ -78,8 +88,11 @@ class _MainPageState extends State<MainPage> {
                         value: _searchLocationBloc,
                       ),
                       BlocProvider<PickLocationBloc>.value(
-                        value:  _pickLocationBloc,
-                      )
+                        value: _pickLocationBloc,
+                      ),
+                      BlocProvider<FeedsBloc>.value(
+                        value: _feedsBloc,
+                      ),
                     ],
                     child: LocationSearch(),
                   ),
@@ -91,11 +104,14 @@ class _MainPageState extends State<MainPage> {
       ),
       body: MultiBlocProvider(
         providers: [
-          BlocProvider<SearchLocationBloc>(
-            builder: (BuildContext context) => _searchLocationBloc,
+          BlocProvider<SearchLocationBloc>.value(
+            value: _searchLocationBloc,
           ),
-          BlocProvider<PickLocationBloc>(
-            builder: (_) => _pickLocationBloc,
+          BlocProvider<PickLocationBloc>.value(
+            value: _pickLocationBloc,
+          ),
+          BlocProvider<FeedsBloc>.value(
+            value: _feedsBloc,
           )
         ],
         child: _children[currentIndex],

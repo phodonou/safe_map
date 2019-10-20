@@ -22,6 +22,7 @@ class MapWidget extends StatelessWidget {
           return FutureBuilder(
             future: convertHeatMapItemsToMarkers(
               heatMapItems: state.heatMapItems,
+              context: context,
             ),
             builder:
                 (BuildContext context, AsyncSnapshot<Set<Marker>> markers) {
@@ -39,7 +40,7 @@ class MapWidget extends StatelessWidget {
               return GoogleMap(
                 initialCameraPosition: CameraPosition(
                   target: LatLng(lat, lon),
-                  zoom: 13,
+                  zoom: 15,
                 ),
                 markers: markers.data,
                 myLocationButtonEnabled: false,

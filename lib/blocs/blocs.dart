@@ -4,3 +4,6 @@ export 'search_location/search_location_state.dart';
 export 'pick_location/pick_location_bloc.dart';
 export 'pick_location/pick_location_state.dart';
 export 'pick_location/pick_location_event.dart';
+export 'feeds/feeds_bloc.dart';
+export 'feeds/feeds_state.dart';
+export 'feeds/feeds_event.dart';

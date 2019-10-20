@@ -13,6 +13,7 @@ class LocationSearch extends StatelessWidget {
         backgroundColor: Colors.white,
         centerTitle: true,
         title: TextField(
+          autocorrect: false,
           decoration:
               new InputDecoration.collapsed(hintText: 'Search Location'),
           onSubmitted: (String criteria) {

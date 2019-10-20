@@ -5,18 +5,20 @@ import 'package:http/http.dart';
 import 'package:demon_hacks/network/http_service.dart';
 import 'package:demon_hacks/models/models.dart';
 
-class HeatMapRepo {
+
+class FeedsRepo {
   final HttpService httpService;
-  HeatMapRepo({
-    @required this.httpService,
+  FeedsRepo({
+    @required this.httpService
   });
-  Future<List<HeatMapItem>> fetchHeatMapItems({
+
+  Future<List<FeedItem>> fetchFeeds({
     @required LocationSearchResult locationSearchResult,
-  }) async {
-    List<HeatMapItem> heatMapItems = [];
+  })async{
+    List<FeedItem> feedItems = [];
     Response res = await httpService.createGetRequest(
       authority: 'stay-safe-today.herokuapp.com',
-      path: '/danger_locations',
+      path: '/danger_feed',
       queryParameters: {
         'lat': locationSearchResult.coordinates.lat.toString(),
         'lon': locationSearchResult.coordinates.long.toString(),
@@ -24,21 +26,18 @@ class HeatMapRepo {
     );
     try {
       List crimes = jsonDecode(res.body)['crimes'];
-      for(var crime in crimes.sublist(0, 500)){
-        heatMapItems.add(
-          HeatMapItem(
-            id: "${crime['lat']}${crime['lon']}",
-            coordinates: Coordinates(
-              lat: crime['lat'],
-              long: crime['lon'],
-            ),
-            details: crime['crime']
-          )
-        );
+      for(var crime in crimes){
+        feedItems.add(FeedItem(
+          message: crime['message'],
+          date: crime['date'],
+          name: crime['name'],
+          favoriteCount: crime['favorite_count'],
+        ));
       }
     } catch (e) {
       print(e);
     }
-    return heatMapItems;
+    return feedItems;
   }
+
 }

@@ -6,6 +6,7 @@ import 'package:meta/meta.dart';
 
 Future<Set<Marker>> convertHeatMapItemsToMarkers({
   @required List<HeatMapItem> heatMapItems,
+  @required BuildContext context,
 }) async {
   Set<Marker> markers = Set();
   BitmapDescriptor icon = await generateIcon();
@@ -15,6 +16,13 @@ Future<Set<Marker>> convertHeatMapItemsToMarkers({
         markerId: MarkerId(heatMapItem.id),
         position: LatLng(heatMapItem.coordinates.lat, heatMapItem.coordinates.long),
         icon: icon,
+        onTap: (){
+          Scaffold.of(context).showSnackBar(
+            SnackBar(
+              content: new Text(heatMapItem.details),
+            )
+          );
+        }
       ),
     );
   }

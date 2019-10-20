@@ -6,14 +6,19 @@ import 'package:meta/meta.dart';
 
 import 'package:demon_hacks/mock_data.dart';
 import 'package:demon_hacks/models/models.dart';
+import 'package:demon_hacks/blocs/blocs.dart';
 
 class PickLocationBloc extends Bloc<PickLocationEvent, PickLocationState> {
   final HeatMapRepo heatMapRepo;
-  PickLocationBloc({@required this.heatMapRepo});
+  final FeedsBloc feedBloc;
+  PickLocationBloc({
+    @required this.heatMapRepo,
+    @required this.feedBloc,
+  });
   @override
   PickLocationState get initialState => LocationFetched(
         centeredLocation: mockCenteredLocation,
-        heatMapItems: mockHeapMapItems,
+        heatMapItems: [],
       );
 
   @override
@@ -26,11 +31,12 @@ class PickLocationBloc extends Bloc<PickLocationEvent, PickLocationState> {
         locationSearchResult: event.locationSearchResult,
       );
       print('HEAT MAP LENGTH ${heatMapItems.length}');
-      print('HEAT MAP LENGTH ${heatMapItems[0].details}');
       yield LocationFetched(
         centeredLocation: event.locationSearchResult,
         heatMapItems: heatMapItems,
       );
+      feedBloc
+          .add(RetrieveFeeds(locationSearchResult: event.locationSearchResult));
     }
   }
 }

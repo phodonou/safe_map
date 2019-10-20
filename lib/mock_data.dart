@@ -5,7 +5,7 @@ final mockCenteredLocation = LocationSearchResult(
     lat: 37,
     long: -122,
   ),
-  locationName: 'Initial',
+  locationName: 'California',
   address: '',
 );
 
