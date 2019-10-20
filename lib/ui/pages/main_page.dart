@@ -26,11 +26,6 @@ class _MainPageState extends State<MainPage> {
     _pickLocationBloc.close();
   }
 
-  final startingCameraPosition = CameraPosition(
-    target: LatLng(37.42796133580664, -122.085749655962),
-    zoom: 14.4746,
-  );
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -72,9 +67,24 @@ class _MainPageState extends State<MainPage> {
               child: CircularProgressIndicator(),
             );
           } else if (state is LocationFetched) {
-            return GoogleMap(
-              initialCameraPosition: startingCameraPosition,
-              markers: convertHeatMapItemsToMarkers(state.heatMapItems),
+            return FutureBuilder(
+              future: convertHeatMapItemsToMarkers(
+                heatMapItems: state.heatMapItems,
+              ),
+              builder:
+                  (BuildContext context, AsyncSnapshot<Set<Marker>> markers) {
+                if (!markers.hasData) return Container();
+                return GoogleMap(
+                  initialCameraPosition: CameraPosition(
+                    target: LatLng(
+                      state.centeredLocation.coordinates.lat,
+                      state.centeredLocation.coordinates.long,
+                    ),
+                    zoom: 14.4746,
+                  ),
+                  markers: markers.data,
+                );
+              },
             );
           } else {
             return Center(
