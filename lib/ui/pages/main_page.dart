@@ -1,13 +1,12 @@
-import 'package:demon_hacks/models/models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:bubble_bottom_bar/bubble_bottom_bar.dart';
 
 import 'package:demon_hacks/ui/components/component.dart';
 import 'package:demon_hacks/blocs/blocs.dart';
-import 'package:demon_hacks/helper_functions.dart';
 import 'package:demon_hacks/repos/repos.dart';
 import 'package:demon_hacks/network/http_service.dart';
+import 'package:demon_hacks/ui/components/component.dart';
 
 class MainPage extends StatefulWidget {
   @override
@@ -18,9 +17,8 @@ class _MainPageState extends State<MainPage> {
   PickLocationBloc _pickLocationBloc;
   LocationSearchRepo _locationSearchRepo;
   HttpService _httpService;
-
-  final defaultLat = 37.42796133580664;
-  final defaultLon = -122.085749655962;
+  int currentIndex;
+  List<Widget> _children;
 
   @override
   void initState() {
@@ -28,6 +26,11 @@ class _MainPageState extends State<MainPage> {
     _httpService = HttpService();
     _pickLocationBloc = PickLocationBloc();
     _locationSearchRepo = LocationSearchRepo(httpService: _httpService);
+    currentIndex = 0;
+    _children = [
+      MapWidget(),
+      FeedWidget(),
+    ];
   }
 
   @override
@@ -39,6 +42,7 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.blueGrey[300],
@@ -82,47 +86,55 @@ class _MainPageState extends State<MainPage> {
           )
         ],
       ),
-      body: BlocBuilder(
-        bloc: _pickLocationBloc,
-        builder: (BuildContext context, PickLocationState state) {
-          if (state is LocationFetching) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          } else if (state is LocationFetched) {
-            return FutureBuilder(
-              future: convertHeatMapItemsToMarkers(
-                heatMapItems: state.heatMapItems,
-              ),
-              builder:
-                  (BuildContext context, AsyncSnapshot<Set<Marker>> markers) {
-                if (!markers.hasData) return Container();
-                final LocationSearchResult searchResult =
-                    state.centeredLocation;
-                double lat;
-                double lon;
-                if (searchResult == null) {
-                  lat = defaultLat;
-                  lon = defaultLon;
-                } else {
-                  lat = searchResult.coordinates.lat;
-                  lon = searchResult.coordinates.long;
-                }
-                return GoogleMap(
-                  initialCameraPosition: CameraPosition(
-                    target: LatLng(lat, lon),
-                    zoom: 15,
-                  ),
-                  markers: markers.data,
-                );
-              },
-            );
-          } else {
-            return Center(
-              child: Text('Something went wrong'),
-            );
-          }
+      body: MultiBlocProvider(
+        providers: [
+          BlocProvider<SearchLocationBloc>(
+            builder: (BuildContext context) => SearchLocationBloc(
+              locationSearchRepo: _locationSearchRepo,
+            ),
+          ),
+          BlocProvider<PickLocationBloc>(
+            builder: (_) => _pickLocationBloc,
+          )
+        ],
+        child: _children[currentIndex],
+      ),
+      bottomNavigationBar: BubbleBottomBar(
+        opacity: .2,
+        currentIndex: currentIndex,
+        onTap: (int pickIndex) {
+          setState(() {
+            currentIndex = pickIndex;
+          });
         },
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+        elevation: 8,
+        fabLocation: BubbleBottomBarFabLocation.end,
+        hasNotch: true,
+        hasInk: true,
+        inkColor: Colors.black12,
+        items: <BubbleBottomBarItem>[
+          BubbleBottomBarItem(
+              backgroundColor: Colors.indigo,
+              icon: Icon(
+                Icons.map,
+                color: Colors.black,
+              ),
+              activeIcon: Icon(
+                Icons.map,
+              ),
+              title: Text("Map")),
+          BubbleBottomBarItem(
+              backgroundColor: Colors.green,
+              icon: Icon(
+                Icons.chat_bubble,
+                color: Colors.black,
+              ),
+              activeIcon: Icon(
+                Icons.chat_bubble_outline,
+              ),
+              title: Text("Feed"))
+        ],
       ),
     );
   }

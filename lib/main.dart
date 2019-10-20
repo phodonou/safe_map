@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:demon_hacks/ui/pages/main_page.dart';
+import 'package:demon_hacks/ui/pages/pages.dart';
 
 void main() => runApp(MyApp());
 
