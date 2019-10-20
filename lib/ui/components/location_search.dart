@@ -13,8 +13,9 @@ class LocationSearch extends StatelessWidget {
         backgroundColor: Colors.white,
         centerTitle: true,
         title: TextField(
-          decoration: new InputDecoration.collapsed(hintText: 'Search Location'),
-          onChanged: (String criteria) {
+          decoration:
+              new InputDecoration.collapsed(hintText: 'Search Location'),
+          onSubmitted: (String criteria) {
             BlocProvider.of<SearchLocationBloc>(context)
                 .add(LocationInputed(location: criteria));
           },
@@ -35,6 +36,17 @@ class LocationSearch extends StatelessWidget {
               itemBuilder: (BuildContext context, int index) {
                 return ListTile(
                   title: Text(locationSearchResults[index].locationName),
+                  subtitle: Text(
+                    locationSearchResults[index].address,
+                  ),
+                  onTap: () {
+                    BlocProvider.of<PickLocationBloc>(context).add(
+                      LocationPicked(
+                        locationSearchResult: locationSearchResults[index],
+                      ),
+                    );
+                    Navigator.of(context).pop();
+                  },
                 );
               },
             );

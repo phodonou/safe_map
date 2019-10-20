@@ -6,40 +6,49 @@ final mockCenteredLocation = LocationSearchResult(
     long: -122,
   ),
   locationName: 'Initial',
+  address: '',
 );
 
 final List<LocationSearchResult> mockLocationSearchResult = [
-  LocationSearchResult(
-      locationName: 'Result 1',
-      coordinates: Coordinates(
-        lat: 1.0,
-        long: 1.0,
-      )),
-  LocationSearchResult(
-      locationName: 'Result 1',
-      coordinates: Coordinates(
-        lat: 1.0,
-        long: 1.0,
-      )),
   LocationSearchResult(
     locationName: 'Result 1',
     coordinates: Coordinates(
       lat: 1.0,
       long: 1.0,
     ),
+    address: '',
+  ),
+  LocationSearchResult(
+    locationName: 'Result 1',
+    coordinates: Coordinates(
+      lat: 1.0,
+      long: 1.0,
+    ),
+    address: '',
+  ),
+  LocationSearchResult(
+    locationName: 'Result 1',
+    coordinates: Coordinates(
+      lat: 1.0,
+      long: 1.0,
+    ),
+    address: '',
+  ),
+  LocationSearchResult(
+    locationName: 'Result 1',
+    coordinates: Coordinates(
+      lat: 1.0,
+      long: 1.0,
+    ),
+    address: '',
   ),
   LocationSearchResult(
       locationName: 'Result 1',
       coordinates: Coordinates(
         lat: 1.0,
         long: 1.0,
-      )),
-  LocationSearchResult(
-      locationName: 'Result 1',
-      coordinates: Coordinates(
-        lat: 1.0,
-        long: 1.0,
-      ))
+      ),
+      address: ''),
 ];
 
 final List<HeatMapItem> mockHeapMapItems = [

@@ -17,6 +17,8 @@ class PickLocationBloc extends Bloc<PickLocationEvent, PickLocationState> {
   Stream<PickLocationState> mapEventToState(
     PickLocationEvent event,
   ) async* {
-    if (event is LocationPicked) {}
+    if (event is LocationPicked) {
+      print('LOCATION PICKED');
+    }
   }
 }

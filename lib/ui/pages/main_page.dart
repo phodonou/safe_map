@@ -6,6 +6,8 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:demon_hacks/ui/components/component.dart';
 import 'package:demon_hacks/blocs/blocs.dart';
 import 'package:demon_hacks/helper_functions.dart';
+import 'package:demon_hacks/repos/repos.dart';
+import 'package:demon_hacks/network/http_service.dart';
 
 class MainPage extends StatefulWidget {
   @override
@@ -14,13 +16,18 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   PickLocationBloc _pickLocationBloc;
+  LocationSearchRepo _locationSearchRepo;
+  HttpService _httpService;
+
   final defaultLat = 37.42796133580664;
   final defaultLon = -122.085749655962;
 
   @override
   void initState() {
     super.initState();
+    _httpService = HttpService();
     _pickLocationBloc = PickLocationBloc();
+    _locationSearchRepo = LocationSearchRepo(httpService: _httpService);
   }
 
   @override
@@ -56,8 +63,17 @@ class _MainPageState extends State<MainPage> {
               Navigator.of(context).push(
                 MaterialPageRoute(
                   fullscreenDialog: true,
-                  builder: (_) => BlocProvider<SearchLocationBloc>(
-                    builder: (BuildContext context) => SearchLocationBloc(),
+                  builder: (_) => MultiBlocProvider(
+                    providers: [
+                      BlocProvider<SearchLocationBloc>(
+                        builder: (BuildContext context) => SearchLocationBloc(
+                          locationSearchRepo: _locationSearchRepo,
+                        ),
+                      ),
+                      BlocProvider<PickLocationBloc>(
+                        builder: (_) => _pickLocationBloc,
+                      )
+                    ],
                     child: LocationSearch(),
                   ),
                 ),

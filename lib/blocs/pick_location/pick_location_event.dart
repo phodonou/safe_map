@@ -3,7 +3,7 @@ import 'package:meta/meta.dart';
 
 abstract class PickLocationEvent {}
 
-class LocationPicked{
+class LocationPicked extends PickLocationEvent{
   final LocationSearchResult locationSearchResult;
   LocationPicked({
     @required this.locationSearchResult,
