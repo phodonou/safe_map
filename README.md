@@ -17,4 +17,14 @@ How can we make navigating the city of Chicago safer?
 - Pull info from social media about crimes that are happening in real-time
 - People can post in real-time about the crimes in the city
 
+## How it was built
+- Chicago Data Portal
+- Twitter API
+- Heroku
+- Flask (Python)
+- Flutter (Dart)
+- Google Maps API
+- Twilio API
+- Flutter Bloc + Bloc (State Management)
+
 ![SafeWay Map](images/safewaymap.png)
