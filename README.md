@@ -1,16 +1,30 @@
-# demon_hacks
+# SafeWay
+Helping people navigate their cities safer!
 
-A new Flutter project.
+![SafeWay Logo](images/logo.jpg)
 
-## Getting Started
+## Inspiration
+How can we make navigating the city of Chicago safer?
 
-This project is a starting point for a Flutter application.
+- ~20% of students walk to school every morning
+- Total Violent Crimes in Chicago: 904
+- Sun-Times counted 241 homicides this year
+- Chicago Tribune reported that CPD solved one in every 20 shootings
 
-A few resources to get you started if this is your first Flutter project:
+## What it does
+- Give people the tools to make data-driven decisions!
+- Highlight routes/areas in a commute that may be dangerous
+- Pull info from social media about crimes that are happening in real-time
+- People can post in real-time about the crimes in the city
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+## How it was built
+- Chicago Data Portal
+- Twitter API
+- Heroku
+- Flask (Python)
+- Flutter (Dart)
+- Google Maps API
+- Twilio API
+- Flutter Bloc + Bloc (State Management)
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+![SafeWay Map](images/safewaymap.png)
