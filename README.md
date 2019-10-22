@@ -1,4 +1,4 @@
-# Safe Map
+# SafeWay
 Helping people navigate their cities safer!
 
 ![SafeWay Logo](images/logo.jpg)
