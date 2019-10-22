@@ -38,7 +38,7 @@ class _FeedWidgetState extends State<FeedWidget> {
                           itemBuilder: (BuildContext context, int index) {
                             return Card(
                               child: ListTile(
-                                title: Text(feedItems[index].message),
+                                title: Text(feedItems[index].message, style: Theme.of(context).textTheme.title,),
                                 subtitle: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[

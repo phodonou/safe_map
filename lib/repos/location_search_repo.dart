@@ -21,7 +21,7 @@ class LocationSearchRepo {
           'input': locationString,
           'inputtype': 'textquery',
           'fields': 'name,geometry,formatted_address',
-          'key': 'AIzaSyAPf4j1wGC3A_eqOl7ThYZcydtUe8vAbrM'
+          'key': 'YOUR GOOGLE MAP API KEY HERE'
         });
     try {
       List candidates = jsonDecode(res.body)['candidates'];
