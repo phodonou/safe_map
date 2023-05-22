@@ -2,5 +2,5 @@ Flask_RESTful==0.3.6
 Flask==1.0.2
 twilio==6.32.0
 gunicorn==19.9.0
-requests==2.20.0
+requests==2.31.0
 TwitterAPI==2.5.9
